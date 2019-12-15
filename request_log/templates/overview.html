@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for e in entries %}
+    <div>
+        {{e.ip }} @ {{e.datetime}} -- {{e.method}} {{ e.url }} -- <a href="{{ url_for('.details', uid = e.id) }}">Details</a>
+    </div>
+{% endfor %}
+{% endblock %}
