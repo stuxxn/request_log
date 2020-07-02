@@ -1,22 +1,27 @@
 from flask import Flask, request
-from .ui import ui
+from .ui import ui, admin
 from .model import db
 from . import model
 
 UI_PREFIX = "/ui"
 STATIC_PREFIX = "/static"
 
+exclude_prefixes = [
+    UI_PREFIX, STATIC_PREFIX, "/admin"
+]
+
 app = Flask(__name__)
 app.config.from_pyfile("config.cfg")
 
 db.init_app(app)
 app.register_blueprint(ui, url_prefix = UI_PREFIX)
+admin.init_app(app)
 
 
 @app.after_request
 def log_request(response):
 
-    if request.path.startswith(UI_PREFIX) or request.path.startswith(STATIC_PREFIX):
+    if any( [request.path.startswith(x) for x in exclude_prefixes]):
         return response
     entry = model.HTTP()
 

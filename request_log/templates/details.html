@@ -3,14 +3,14 @@
 {% block content %}
 
 <div>
-    <span id="key">Origin: </span> <span id="value">{{ entry.ip }} @ {{ entry.datetime }}</span><br>
-    <span id="key">Reuqest: </span> <span id="value">{{ entry.method }} {{ entry.url }}</span><br>
-    <span id="key">Query: </span> <span id="value">{{ entry.query_string }}</span><br>
-    <span id="key">Headers: </span><br>
+    <span class="key">Origin: </span> <span class="value">{{ entry.ip }} @ {{ entry.datetime }}</span><br>
+    <span class="key">Reuqest: </span> <span class="value">{{ entry.method }} {{ entry.url }}</span><br>
+    <span class="key">Query: </span> <span class="value">{{ entry.query_string }}</span><br>
+    <span class="key">Headers: </span><br>
     {% for h in entry.headers %}
-        |--> <span id="key">{{h.key}} </span> <span id="value">{{ h.value }}</span><br>
+        |--> <span class="key">{{h.key}} </span> <span class="value">{{ h.value }}</span><br>
     {% endfor %}
-    <span id="key">Data: </span>
+    <span class="key">Data: </span>
     <pre>
         {{ entry.data.decode() }}
     </pre>

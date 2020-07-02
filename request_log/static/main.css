@@ -1,7 +1,7 @@
-#key {
+.key {
     font-weight: bold;
 }
 
-#value {
+.value {
     font-family: monospace;
 }

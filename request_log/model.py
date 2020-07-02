@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentListField, BinaryField
+from mongoengine import Document, ListField, StringField, DateTimeField, EmbeddedDocument, EmbeddedDocumentField, BinaryField
 from datetime import datetime
 from flask_mongoengine import MongoEngine
 
@@ -18,6 +18,6 @@ class HTTP(Base):
     method = StringField(required=True)
     url = StringField(required=True)
     query_string = StringField()
-    query = EmbeddedDocumentListField(KeyValue)
-    headers = EmbeddedDocumentListField(KeyValue)
+    query = ListField(EmbeddedDocumentField(KeyValue))
+    headers = ListField(EmbeddedDocumentField(KeyValue))
     data = BinaryField()
