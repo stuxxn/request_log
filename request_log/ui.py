@@ -2,9 +2,29 @@ from flask import Blueprint, render_template
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView, EmbeddedForm
 from . import model
+from mongoengine import EmbeddedDocument
+from markupsafe import Markup
+from flask_admin.model import typefmt
+import html
 
 ui = Blueprint("UI", __name__)
 
+
+def list_format(view, values):
+
+    v = [ x if not isinstance(x, model.KeyValue) else kv_format(view, x) for x in values]
+    return Markup( "".join( [str(x) for x in v]))
+
+
+def kv_format(view, value):
+    return Markup(f"<div><span class='key'>{html.escape(value.key)}:</span> "
+                  f"<span class='value'>{html.escape(value.value)}</span></div>")
+
+view_formatter = dict(typefmt.BASE_FORMATTERS)
+view_formatter.update({
+    list: list_format,
+    model.KeyValue: kv_format
+})
 
 class HTTPView(ModelView):
     can_create = False
@@ -12,17 +32,14 @@ class HTTPView(ModelView):
     can_delete = False
     can_view_details = True
 
-    column_exclude_list = ["_cls"]
+
 
     column_filters = ['url']
+    column_list = ("datetime", "method", "url",
+                   "query_string", "query", "headers", "data")
 
-    form_subdocuments = {
-        "query": {
-            "form_subdocuments": {
-                None: EmbeddedForm()
-            }
-        }
-    }
+    column_type_formatters = view_formatter
+
 
 
 admin = Admin( name = "Request Log UI")
