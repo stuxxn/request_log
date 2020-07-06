@@ -1,4 +1,6 @@
 .idea/
+.flaskenv
+**/www
 Pipfile.lock
 */__pycache__/
 request_log/config.cfg
